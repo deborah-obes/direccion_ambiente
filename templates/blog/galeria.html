@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Galería - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+  <h1 class="mb-3">{{ titulo_sitio }} - Galería de trabajos</h1>
+
+  {% if galeria %}
+    <h5>{{ galeria.titulo }}</h5>
+    <div class="ratio ratio-4x3">
+      {{ galeria.iframe|safe }}
+    </div>
+  {% else %}
+    <p class="text-muted">No hay galería activa en este momento.</p>
+  {% endif %}
+{% endblock %}

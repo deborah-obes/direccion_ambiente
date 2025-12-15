@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Inicio - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">{{ titulo_sitio }}</h1>
+
+  {% for post in posts %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.titulo }}</h5>
+        <p class="text-muted">{{ post.fecha|date:"d/m/Y" }}</p>
+        <p class="card-text">{{ post.texto|linebreaks }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">Aún no hay entradas publicadas.</p>
+  {% endfor %}
+{% endblock %}
