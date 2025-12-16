@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Post, Galeria
 
@@ -8,6 +9,7 @@ def inicio(request):
         'titulo_sitio': 'Dirección de Ambiente y Espacios Verdes'
     })
 
+@login_required
 def galeria(request):
     galeria = Galeria.objects.filter(activo=True).first()
     return render(request, 'blog/galeria.html', {
