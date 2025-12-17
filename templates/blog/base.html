@@ -1,0 +1,58 @@
+{# blog/base.html #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ titulo_sitio }}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/static.css' %}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- BARRA SUPERIOR VERDE -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28a745;">
+        <div class="container-fluid">
+            <!-- botón hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuCollapse"
+                    aria-controls="menuCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menuCollapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'galeria' %}">Galería</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'nosotros' %}">Nosotros</a></li>
+                </ul>
+            </div>
+
+            <!-- título a la derecha -->
+            <span class="navbar-text text-white fw-bold ms-auto">
+                Dirección de Ambiente y Espacios Verdes
+            </span>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO DINÁMICO -->
+    <main class="container mt-4 flex-fill">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER FIJO -->
+    <footer class="footer mt-auto py-3 bg-success text-white">
+        <div class="container text-center">
+            <span class="fw-bold">Contactanos:</span><br>            
+            <a href="mailto:dccionambyespaciosverdes@gmail.com" class="text-white text-decoration-none">
+                dccionambyespaciosverdes@gmail.com
+            </a><br>
+            <a href="https://www.instagram.com/muniresistencia" target="_blank" class="text-white text-decoration-none">Instagram</a> |
+            <a href="https://facebook.com/muniresistencia" target="_blank" class="text-white text-decoration-none">Facebook</a><br>
+            Av. Italia N° 150 | 1° piso - Resistencia, Chaco - Argentina<br>
+            Secretaría de Obras y Servicios | Dirección Gral. de Arquitectura
+        </div>
+    </footer>
+
+    <!-- JS de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
