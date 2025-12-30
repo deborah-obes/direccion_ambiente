@@ -97,3 +97,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_NAME = 'Dirección de Ambiente y Espacios Verdes'
 
 LOGIN_URL = '/admin/login/'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

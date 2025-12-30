@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+{% block title %}Administrar Publicación - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4 text-center">Administrar Publicación</h1>
+  <div class="col-12 col-md-6 col-lg-4 mx-auto">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {# campo oculto: número de página para volver después de guardar #}
+      {% if page %}
+        <input type="hidden" name="page" value="{{ page }}">
+      {% endif %}
+
+      {{ form.as_p }}
+
+      <button type="submit" class="btn btn-success w-100">
+        <i class="bi bi-check-circle"></i> Guardar
+      </button>
+      <a href="{% url 'blog:lista_publicaciones' %}{% if page %}?page={{ page }}{% endif %}"
+         class="btn btn-outline-secondary w-100 mt-2">
+        <i class="bi bi-x-circle"></i> Cancelar
+      </a>
+    </form>
+  </div>
+{% endblock %}

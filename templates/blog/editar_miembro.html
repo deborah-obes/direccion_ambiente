@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Editar miembro - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h2 class="mb-4">Editar miembro</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" name="nombre" class="form-control" value="{{ miembro.nombre }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Rol</label>
+          <input type="text" name="rol" class="form-control" value="{{ miembro.rol }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'blog:nosotros' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

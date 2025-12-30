@@ -1,0 +1,208 @@
+/* ==========================================================
+   1.  VARIABLES GLOBALES
+   ========================================================== */
+:root {
+    --bg-dark        : #fcfdfd;
+    --verde          : #28a745;
+    --verde-claro    : #28a745;
+    --text-claro     : #2d3531;
+    --sombra         : 0 4px 12px rgba(0, 0, 0, .30);
+}
+
+/* ==========================================================
+   2.  BASE Y TIPOGRAFÍA
+   ========================================================== */
+body {
+    background-color : var(--bg-dark);
+    color            : var(--text-claro);
+    font-family      : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display          : flex;
+    flex-direction   : column;
+    min-height       : 100vh;
+}
+main { flex: 1; }
+
+/* ==========================================================
+   3.  HEADER
+   ========================================================== */
+header {
+    background-color: var(--verde);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+header h1 { margin: 0; font-size: 2rem; }
+header p  { margin-top: 10px; font-size: 1.1rem; }
+
+/* ==========================================================
+   4.  SECCIÓN PUBLICACIONES
+   ========================================================== */
+#publicaciones {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+    margin-bottom: 80px;   /* margen antes del footer */
+}
+#publicaciones h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* tarjeta publicación */
+.tarjeta {
+    background    : #1b3024;
+    border        : 2.5px solid var(--verde) !important;
+    border-radius : 8px;
+    padding       : 20px;
+    color         : #f0f0f0;
+    box-shadow    : var(--sombra);
+    transition    : transform 0.2s ease, border 0.3s ease, box-shadow 0.3s ease;
+}
+.tarjeta:hover {
+    transform: translateY(-5px);
+    border: 2.5px solid #4ade80 !important;   /* verde brillante */
+    box-shadow: 0 0 12px #4ade80;
+}
+.tarjeta h3 { margin-top: 0; font-size: 1.3rem; }
+.tarjeta p  { margin: 5px 0 0; font-size: 0.95rem; }
+
+/* ==========================================================
+   5.  PAGINACIÓN
+   ========================================================== */
+.pagination {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 60px; /* margen con el footer */
+}
+.pagination button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--verde);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.pagination button:hover { background-color: #1e7e34; }
+.pagination button:disabled { background-color: #6c757d; cursor: not-allowed; }
+
+/* ==========================================================
+   6.  FOOTER
+   ========================================================== */
+footer {
+    background-color: #e0e0e0;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+/* ==========================================================
+   GALERÍA – 3x5 grid
+   ========================================================== */
+#galeria {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+    margin-bottom: 80px;   /* margen antes del footer */
+}
+.galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.tarjeta-galeria {
+    background: #1b3024;
+    border: 2.5px solid var(--verde);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    display: flex;
+    flex-direction: column;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.tarjeta-galeria img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.tarjeta-galeria .info {
+    padding: 15px;
+    color: #f0f0f0;
+}
+.tarjeta-galeria .info h3 { margin: 0 0 10px; font-size: 1.1rem; }
+.tarjeta-galeria .btn-ver {
+    background-color: var(--verde);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.tarjeta-galeria .btn-ver:hover { background-color: #1e7e34; }
+
+/* ==========================================================
+   MODAL SIMPLE (opcional)
+   ========================================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+}
+.modal img { max-width: 90%; max-height: 80%; border-radius: 8px; }
+.modal .cerrar { position: absolute; top: 20px; right: 40px; color: white; font-size: 2rem; cursor: pointer; }
+
+/* ==========================================================
+   HOVER EN CUALQUIER TARJETA – borde verde semi-transparente
+   ========================================================== */
+.card:hover {
+    border: 2.5px solid #4cbd75 !important;
+    box-shadow: 0 0 12px #52a16f;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ==========================================================
+   TRANSICIÓN SUAVE – borde verde semi-transparente
+   ========================================================== */
+.card {
+    position: relative;
+    border: 2.5px transparent;
+    box-shadow: 0 0 0 rgba(74, 222, 128, 0);
+    transition: border 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2.5px; /* grosor del borde */
+    background: linear-gradient(90deg, #4ade80, #22c55e);
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:hover {
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.6);
+}

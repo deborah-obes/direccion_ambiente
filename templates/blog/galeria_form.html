@@ -1,0 +1,17 @@
+{# blog/templates/blog/galeria_form.html #}
+{% extends 'blog/base.html' %}
+
+{% block title %}Administrar Galería - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Administrar Galería</h1>
+
+<div class="col-12 col-md-6 col-lg-4 mx-auto">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success w-100">Guardar</button>
+    <a href="{% url 'blog:galeria' %}" class="btn btn-outline-secondary w-100 mt-2">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'blog/base.html' %}
+{% block title %}Publicaciones - {{ titulo_sitio }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* margen antes del footer */
+#lista-pub-content { padding-bottom: 80px; }
+
+/* contenedor relativo para botones flotantes */
+.card { position: relative; }
+
+/* botones ocultos hasta hover */
+.card .acciones-pub {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+.card:hover .acciones-pub { opacity: 1; }
+
+/* paginación centrada */
+.pagination-bar { text-align:center; margin-top:40px; }
+.pagination-bar a, .pagination-bar span {
+  display: inline-block;
+  margin: 0 4px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.pagination-bar a {
+  background: var(--verde, #28a745);
+  color: white;
+}
+.pagination-bar a:hover { background: #1e7e34; }
+.pagination-bar .current {
+  background: #6c757d;
+  color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="lista-pub-content">
+  <h1 class="mb-4 text-center">Publicaciones</h1>
+
+  {% if user.is_authenticated %}
+    <div class="text-center mb-3">
+      <a href="{% url 'blog:pub_crear' %}" class="btn btn-success">+ Nueva publicación</a>
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+    {% for pub in page_obj %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm hvr-green-border">
+          <a href="{% url 'blog:pub_detalle' pub.pk %}" class="text-decoration-none text-dark">
+            <img src="{{ pub.foto.url }}" class="card-img-top" alt="{{ pub.titulo }}">
+            <div class="card-body">
+              <h5 class="card-title text-dark">{{ pub.titulo }}</h5>
+              <p class="card-text text-muted">{{ pub.resumen|truncatechars:120 }}</p>
+              <small class="text-muted">{{ pub.fecha_hora|date:"d/m/Y H:i" }}</small>
+            </div>
+          </a>
+
+          {% if user.is_authenticated %}
+            <div class="acciones-pub">
+              <a href="{% url 'blog:pub_editar' pub.pk %}" class="btn btn-sm btn-warning me-1" title="Editar">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <a href="{% url 'blog:pub_borrar' pub.pk %}" class="btn btn-sm btn-danger" title="Borrar">
+                <i class="bi bi-trash-fill"></i>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center text-muted">Aún no hay publicaciones.</p>
+    {% endfor %}
+  </div>
+
+  {# ---------- paginación ---------- #}
+  {% if page_obj.has_other_pages %}
+    <div class="pagination-bar">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+          <i class="bi bi-chevron-left"></i> Anterior
+        </a>
+      {% endif %}
+
+      <span class="current">Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+          Siguiente <i class="bi bi-chevron-right"></i>
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ pub.titulo }} - {{ titulo_sitio }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* margen antes del footer */
+#detalle-pub { padding-bottom: 80px; }
+
+/* botones flotantes tipo galería */
+#detalle-pub .acciones-pub {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+#detalle-pub:hover .acciones-pub { opacity: 1; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="detalle-pub" class="col-12 col-md-8 col-lg-6 mx-auto position-relative">
+  <h1 class="mb-3">{{ pub.titulo }}</h1>
+  <p class="text-muted mb-2">{{ pub.fecha_hora|date:"d/m/Y H:i" }}</p>
+
+  {% if pub.foto %}
+    <img src="{{ pub.foto.url }}" class="img-fluid rounded mb-3" alt="{{ pub.titulo }}">
+  {% endif %}
+
+  <p class="lead">{{ pub.resumen }}</p>
+  <div>{{ pub.memoria|linebreaks }}</div>
+
+  {% if user.is_authenticated %}
+    <div class="acciones-pub">
+      <a href="{% url 'blog:pub_editar' pub.pk %}" class="btn btn-sm btn-warning me-1" title="Editar">
+        <i class="bi bi-pencil-fill"></i>
+      </a>
+      <a href="{% url 'blog:pub_borrar' pub.pk %}" class="btn btn-sm btn-danger" title="Borrar">
+        <i class="bi bi-trash-fill"></i>
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

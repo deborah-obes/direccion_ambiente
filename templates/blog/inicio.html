@@ -1,20 +1,86 @@
-{# blog/inicio.html #}
+{# blog/templates/blog/inicio.html #}
 {% extends 'blog/base.html' %}
 
 {% block title %}Inicio - {{ titulo_sitio }}{% endblock %}
 
-{% block content %}
-  <h1 class="mb-4">{{ titulo_sitio }}</h1>
+{% block extra_css %}
+<style>
+/* Cards más bajas */
+.card-fixed-h {
+  height: 220px;
+  object-fit: cover;
+}
 
-  {% for post in posts %}
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">{{ post.titulo }}</h5>
-        <p class="text-muted">{{ post.fecha|date:"d/m/Y" }}</p>
-        <p class="card-text">{{ post.texto|linebreaks }}</p>
+/* Contenedor íconos: abajo a la derecha */
+.card .acciones {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.card:hover .acciones {
+  opacity: 1;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4 text-center">{{ titulo_sitio }}</h1>
+  <p class="text-left justify mb-5">
+    Proyectar, diseñar y supervisar la elaboración de la documentación técnica correspondiente
+    a los proyectos urbanos que llevamos a cabo como profesionales.<br>
+    Se diseñan e implementan políticas públicas destinadas a mejorar la calidad de vida en la Ciudad;
+    y para ello, se planifican acciones vinculadas a potenciar los espacios verdes municipales.
+  </p>
+
+  <!-- Publicaciones -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Publicaciones</h3>
+    {% if user.is_authenticated %}
+      <a href="{% url 'blog:pub_crear' %}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Nueva publicación
+      </a>
+    {% endif %}
+  </div>
+
+  <div class="row g-4">
+    {% for pub in publicaciones %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm position-relative">
+          <!-- Imagen clickeable -->
+          <a href="{% url 'blog:pub_detalle' pub.pk %}" class="text-decoration-none text-dark">
+            <img src="{{ pub.foto.url|default:'' }}" class="card-img-top card-fixed-h" alt="{{ pub.titulo }}">
+          </a>
+
+          <div class="card-body d-flex flex-column">
+            <a href="{% url 'blog:pub_detalle' pub.pk %}" class="text-decoration-none text-dark">
+              <h5 class="card-title">{{ pub.titulo }}</h5>
+              <p class="card-text text-muted flex-grow-1 small">{{ pub.resumen|truncatechars:90 }}</p>
+              <small class="text-muted mt-auto">{{ pub.fecha_hora|date:"d/m/Y H:i" }}</small>
+            </a>
+
+            <!-- Íconos abajo a la derecha -->
+            {% if user.is_authenticated %}
+              <div class="acciones">
+                <a href="{% url 'blog:pub_editar' pub.pk %}"
+                   class="btn btn-sm btn-warning me-1"
+                   title="Editar">
+                  <i class="bi bi-pencil-fill"></i>
+                </a>
+                <a href="{% url 'blog:pub_borrar' pub.pk %}"
+                   class="btn btn-sm btn-danger"
+                   title="Borrar">
+                  <i class="bi bi-trash-fill"></i>
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </div>
-  {% empty %}
-    <p class="text-muted">Aún no hay entradas publicadas.</p>
-  {% endfor %}
+    {% empty %}
+      <p class="text-center text-muted">Aún no hay publicaciones.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

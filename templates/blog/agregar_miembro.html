@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Agregar integrante - {{ titulo_sitio }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <h2 class="mb-4">Agregar nuevo integrante</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input type="text" name="nombre" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rol</label>
+        <input type="text" name="rol" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Agregar
+      </button>
+      <a href="{% url 'blog:nosotros' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
