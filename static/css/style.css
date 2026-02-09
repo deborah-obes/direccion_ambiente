@@ -178,7 +178,7 @@ footer {
    ========================================================== */
 .card {
     position: relative;
-    border: 2.5px transparent;
+    border: 2px transparent;
     box-shadow: 0 0 0 rgba(74, 222, 128, 0);
     transition: border 0.4s ease, box-shadow 0.4s ease;
 }
@@ -188,7 +188,7 @@ footer {
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: 2.5px; /* grosor del borde */
+    padding: 2px; /* grosor del borde */
     background: linear-gradient(90deg, #4ade80, #22c55e);
     -webkit-mask: 
         linear-gradient(#fff 0 0) content-box, 
