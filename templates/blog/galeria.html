@@ -75,21 +75,15 @@
             <h5 class="card-title">{{ item.titulo }}</h5>
             <p class="card-text flex-grow-1 small">{{ item.descripcion|linebreaks }}</p>
 
-            {# ---------- BOTONES ---------- #}
-            {% if item.imagen %}
-              <button class="btn btn-sm btn-outline-success mt-auto align-self-start"
-                      onclick="verImagen('{{ item.imagen.url }}', '{{ item.titulo }}')">
-                Ver foto
-              </button>
-            {% endif %}
-
-            {#  >>> NUEVO: mostramos el botón solo si hay url válida <<< #}
-            {% if item.album_url %}
-              <a href="{{ item.album_url }}" target="_blank" rel="noopener noreferrer"
-                 class="btn btn-sm btn-outline-primary mt-auto align-self-start">
-                Ver álbum
-              </a>
-            {% endif %}
+            {# ---------- BOTONES EN FILA ---------- #}
+            <div class="d-flex gap-2 mt-auto">
+              {% if item.url %}
+                <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer"
+                   class="btn btn-sm btn-outline-primary">
+                  Ver álbum 
+                </a>
+              {% endif %}
+            </div>
 
             <!-- Íconos flotantes -->
             {% if user.is_authenticated %}
@@ -133,9 +127,9 @@
 </div>
 
 {# Modal simple #}
-<div id="modalImagen" class="modal">
-  <span class="cerrar" onclick="cerrarModal()">&times;</span>
-  <img id="imgModal" src="" alt="">
+<div id="modalImagen" class="modal" onclick="cerrarModalFuera(event)">
+  <span class="cerrar" onclick="cerrarModal(event)">&times;</span>
+  <img id="imgModal" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <script>
@@ -144,8 +138,16 @@
     document.getElementById('imgModal').alt = titulo;
     document.getElementById('modalImagen').style.display = 'flex';
   }
-  function cerrarModal() {
+  
+  function cerrarModal(e) {
+    if (e) e.stopPropagation();
     document.getElementById('modalImagen').style.display = 'none';
+  }
+  
+  function cerrarModalFuera(e) {
+    if (e.target.id === 'modalImagen') {
+      document.getElementById('modalImagen').style.display = 'none';
+    }
   }
 </script>
 {% endblock %}

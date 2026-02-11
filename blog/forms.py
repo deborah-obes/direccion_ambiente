@@ -7,8 +7,7 @@ class GaleriaForm(forms.ModelForm):
         model = Galeria
         fields = ['titulo', 'url', 'album_url', 'imagen', 'descripcion', 'activo']
         widgets = {
-            'url': forms.URLInput(attrs={'placeholder': 'https://photos.app.goo.gl/... (antiguo)'}),
-            'album_url': forms.URLInput(attrs={'placeholder': 'https://photos.app.goo.gl/... (nuevo)'})
+                'album_url': forms.URLInput(attrs={'placeholder': 'https://photos.app.goo.gl/... (nuevo)'})
         }
 
 class PublicacionForm(forms.ModelForm):
