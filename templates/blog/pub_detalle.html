@@ -1,43 +1,103 @@
 {% extends 'blog/base.html' %}
-{% block title %}{{ pub.titulo }} - {{ titulo_sitio }}{% endblock %}
+{% block title %}Publicaciones - {{ titulo_sitio }}{% endblock %}
 
 {% block extra_css %}
 <style>
 /* margen antes del footer */
-#detalle-pub { padding-bottom: 80px; }
+#lista-pub-content { padding-bottom: 80px; }
 
-/* botones flotantes tipo galería */
-#detalle-pub .acciones-pub {
+/* Tarjeta clickeable */
+.tarjeta-pub {
+  position: relative;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+/* Sin efectos hover en la tarjeta */
+.tarjeta-pub:hover {
+  border: 1px solid rgba(0,0,0,0.125);
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+/* botones flotantes */
+.tarjeta-pub .acciones-pub {
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
   opacity: 0;
   transition: opacity 0.25s ease-in-out;
+  z-index: 10;
 }
-#detalle-pub:hover .acciones-pub { opacity: 1; }
+.tarjeta-pub:hover .acciones-pub { opacity: 1; }
+
+/* paginación */
+.pagination-bar { text-align:center; margin-top:40px; }
+.pagination-bar a, .pagination-bar span {
+  display: inline-block; margin: 0 4px; padding: 8px 14px; border-radius: 4px; text-decoration: none;
+}
+.pagination-bar a { background: var(--verde, #28a745); color: white; }
+.pagination-bar a:hover { background: #1e7e34; }
+.pagination-bar .current { background: #6c757d; color: white; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div id="detalle-pub" class="col-12 col-md-8 col-lg-6 mx-auto position-relative">
-  <h1 class="mb-3">{{ pub.titulo }}</h1>
-  <p class="text-muted mb-2">{{ pub.fecha_hora|date:"d/m/Y H:i" }}</p>
-
-  {% if pub.foto %}
-    <img src="{{ pub.foto.url }}" class="img-fluid rounded mb-3" alt="{{ pub.titulo }}">
-  {% endif %}
-
-  <p class="lead">{{ pub.resumen }}</p>
-  <div>{{ pub.memoria|linebreaks }}</div>
+<div id="lista-pub-content">
+  <h1 class="mb-4 text-center">Publicaciones</h1>
 
   {% if user.is_authenticated %}
-    <div class="acciones-pub">
-      <a href="{% url 'blog:pub_editar' pub.pk %}" class="btn btn-sm btn-warning me-1" title="Editar">
-        <i class="bi bi-pencil-fill"></i>
-      </a>
-      <a href="{% url 'blog:pub_borrar' pub.pk %}" class="btn btn-sm btn-danger" title="Borrar">
-        <i class="bi bi-trash-fill"></i>
-      </a>
+    <div class="text-center mb-3">
+      <a href="{% url 'blog:pub_crear' %}" class="btn btn-success">+ Nueva publicación</a>
+    </div>
+  {% endif %}
+
+  <div class="row g-4">
+    {% for pub in page_obj %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <!-- Tarjeta clickeable -->
+        <div class="tarjeta-pub" onclick="location.href='{% url 'blog:pub_detalle' pub.pk %}'">
+          
+          <img src="{{ pub.foto.url }}" class="card-img-top" alt="{{ pub.titulo }}" style="height: 200px; object-fit: cover;">
+          <div class="p-3">
+            <h5 class="text-dark">{{ pub.titulo }}</h5>
+            <p class="text-muted small">{{ pub.resumen|truncatechars:120 }}</p>
+            <small class="text-muted">{{ pub.fecha_hora|date:"d/m/Y H:i" }}</small>
+          </div>
+
+          {% if user.is_authenticated %}
+            <div class="acciones-pub" onclick="event.stopPropagation();">
+              <a href="{% url 'blog:pub_editar' pub.pk %}" class="btn btn-sm btn-warning me-1" title="Editar">
+                <i class="bi bi-pencil-fill"></i>
+              </a>
+              <a href="{% url 'blog:pub_borrar' pub.pk %}" class="btn btn-sm btn-danger" title="Borrar">
+                <i class="bi bi-trash-fill"></i>
+              </a>
+            </div>
+          {% endif %}
+          
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center text-muted">Aún no hay publicaciones.</p>
+    {% endfor %}
+  </div>
+
+  {# ---------- paginación ---------- #}
+  {% if page_obj.has_other_pages %}
+    <div class="pagination-bar">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-left"></i> Anterior</a>
+      {% endif %}
+      <span class="current">Pág {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Siguiente <i class="bi bi-chevron-right"></i></a>
+      {% endif %}
     </div>
   {% endif %}
 </div>
